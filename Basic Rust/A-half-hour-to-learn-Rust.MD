@@ -27,7 +27,7 @@ x = 42;
 ```
 let x: i32 = 42;
 ```
-Nếu bạn khai báo một tên biến và khởi tạo nó sau đó trong một dòng lệnh khác, trình biên dịch sẽ ngăn bạn sử dụng nó trước khi nó được khởi tạo:
+Nếu bạn khai báo một tên biến và khởi tạo nó sau đó ở một chỗ khác, trình biên dịch sẽ ngăn bạn sử dụng nó trước khi nó được khởi tạo:
 ```
 let x;
 foobar(x); // error: borrow of possibly-uninitialized variable: `x`
@@ -83,7 +83,7 @@ Tất nhiên, khi hủy cấu trúc một tuple, **_** có thể được sử d
 ```
 let (_, right) = slice.split_at(middle);
 ```
-Dấu chấm phẩy đánh dấu kết thúc một câu lệnh:
+Dấu chấm phẩy đánh dấu kết thúc một câu lệnh (statement):
 ```
 let x = 3;
 let y = 5;
@@ -95,4 +95,56 @@ let x = vec![1, 2, 3, 4, 5, 6, 7, 8]
     .iter()
     .map(|x| x + 3)
     .fold(0, |x, y| x + y);
+```
+Từ khóa **fn** được sử dụng để khai báo một function.
+Dưới đây là một void function:
+```
+fn greet() {
+    println!("Hi there!");
+}
+```
+Còn đây là một hàm trả về một số nguyên có dấu 32 bit. Mũi tên chỉ định kiểu trả về của nó:
+```
+fn fair_dice_roll() -> i32 {
+    4
+}
+```
+Cặp dấu ngoặc nhọn dùng để khai báo một khối (block), mỗi khối đều có phạm vi (scope) riêng của nó:
+```
+// This prints "in", then "out"
+fn main() {
+    let x = "out";
+    {
+        // this is a different `x`
+        let x = "in";
+        println!("{}", x);
+    }
+    println!("{}", x);
+}
+```
+Các khối cũng là các biểu thức (expression), có nghĩa là chúng có thể trả về một giá trị:
+```
+// this:
+let x = 42;
+
+// is equivalent to this:
+let x = { 42 };
+```
+Bên trong một khối, có thể có nhiều câu lệnh:
+```
+let x = {
+    let y = 1; // first statement
+    let z = 2; // second statement
+    y + z // this is the *tail* - what the whole block will evaluate to
+};
+```
+Bạn có thể để ý ở những ví dụ trên, đều không có dấu chấm phẩy đằng sau giá trị trả về của một khối, bởi hai điều sau tương đương với nhau:
+```
+fn fair_dice_roll() -> i32 {
+    return 4;
+}
+
+fn fair_dice_roll() -> i32 {
+    4
+}
 ```
