@@ -233,3 +233,47 @@ Trong đoạn code trên, hai câu lệnh khai báo biến **v** hoạt động 
 ```
 use std::prelude::v1::*;
 ```
+Cấu trúc (struct) được khai báo bằng từ khóa **struct**:
+```
+struct Vec2 {
+    x: f64, // 64-bit floating point, aka "double precision"
+    y: f64,
+}
+
+```
+Chúng có thể được khởi tạo với _struct literals_:
+```
+let v1 = Vec2 { x: 1.0, y: 3.0 };
+let v2 = Vec2 { y: 2.0, x: 4.0 };
+// the order does not matter, only the names do
+```
+Có một shortcut để khởi tạo các trường còn lại của struct (rest of the fields) từ một struct khác:
+```
+let v3 = Vec2 {
+    x: 14.0,
+    ..v2
+};
+```
+Đây được gọi là cú pháp cập nhật struct, chỉ có thể xảy ra ở vị trí cuối cùng và không thể được theo sau bởi dấu phẩy.
+
+Lưu ý rằng, khởi tạo phần còn lại của các trường cũng có thể có nghĩa là tất cả các trường:
+```
+let v4 = Vec2 { ..v3 };
+```
+Các struct, cũng như tuple, đều có thể destructured.
+
+Ví dụ như với **let** pattern:
+```
+let (name, age) = slice.split_at(people1);
+```
+Hoặc có thể làm như thế này:
+```
+let v = Vec2 { x: 3.0, y: 6.0 };
+let Vec2 { x, y } = v;
+// `x` is now 3.0, `y` is now `6.0`
+```
+Hoặc thế này:
+```
+let Vec2 { x, .. } = v;
+// this throws away `v.y`
+```
