@@ -148,3 +148,88 @@ fn fair_dice_roll() -> i32 {
     4
 }
 ```
+Câu lệnh điều kiện với **if** cũng là một loại biểu thức:
+```
+fn fair_dice_roll() -> i32 {
+    if feeling_lucky {
+        6
+    } else {
+        4
+    }
+}
+```
+**match** cũng là một loại biểu thức:
+```
+fn fair_dice_roll() -> i32 {
+    match feeling_lucky {
+        true => 6,
+        false => 4,
+    }
+}
+```
+Dấu chấm thường được sử dụng để truy cập vào các trường của một giá trị:
+```
+let a = (10, 20);
+a.0; // this is 10
+
+struct People {
+    name: String,
+    age: u8,
+}
+let people1 = People {
+    name: String::from("Chinh"),
+    age: 18
+}
+people.name; // this is "Chinh"
+```
+Dấu chấm cũng có thể dùng để gọi method trên một giá trị:
+```
+let nickname = "chinh";
+nickname.len(); // this is 5
+```
+Double-colon, **::** , cũng được dùng tương tự để gọi method nhưng nó hoạt động trên namespace.
+
+Trong ví dụ này, **std** là một _crate_ (a library), **cmp** là một _module_ (a source file) và **min** là một _function_:
+```
+let least = std::cmp::min(3, 8); // this is 3
+```
+Chỉ thị **use** được sử dụng để import các đối tượng từ một namespace khác vào scope và từ đó ta có thể tái sử dụng code đã được đóng gói trong một package khác:
+```
+use std::cmp::min;
+
+let least = min(7, 1); // this is 1
+```
+Các cách sử dụng **use** dưới đây là tương tự nhau:
+```
+// this works:
+use std::cmp::min;
+use std::cmp::max;
+
+// this also works:
+use std::cmp::{min, max};
+
+// this also works!
+use std::{cmp::min, cmp::max};
+```
+Với (*), cho phép bạn import mọi đối tượng từ một namespace:
+```
+// this brings `min` and `max` in scope, and many other things
+use std::cmp::*;
+```
+Các types cũng là namespace và các phương thức có thể được gọi như các hàm thông thường:
+```
+let x = "amos".len(); // this is 4
+let x = str::len("amos"); // this is also 4
+```
+**str** là một kiểu dữ liệu nguyên thủy (primitive type), nhưng cũng có nhiều kiểu dữ liệu không nguyên thủy (non-primitive type) cũng nằm trong phạm vi theo mặc định:
+```
+// `Vec` is a regular struct, not a primitive type
+let v = Vec::new();
+
+// this is exactly the same code, but with the *full* path to `Vec`
+let v = std::vec::Vec::new();
+```
+Trong đoạn code trên, hai câu lệnh khai báo biến **v** hoạt động tương tự nhau, nhưng chúng ta chỉ cần sử dụng cách 1 mà không viết như cách 2 bởi Rust đã đưa vào scope theo mặc định khá nhiều thứ như Vec, String, Option và Result:
+```
+use std::prelude::v1::*;
+```
