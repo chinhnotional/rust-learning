@@ -6,7 +6,7 @@ Trong bài viết này, thay vì tập trung vào một hoặc hai khái niệm,
 
 Sẵn sàng chưa? Bắt đầu nào!
 
-Từ khóa **let** được sử dụng trong ràng buộc biến:
+Từ khóa **let** được sử dụng trong ràng buộc biến (variable binding):
 ```
 let x; // declare "x"
 x = 42; // assign 42 to "x"
@@ -27,7 +27,7 @@ x = 42;
 ```
 let x: i32 = 42;
 ```
-Nếu bạn khai báo một biến và khởi tạo nó sau đó trong một dòng lệnh khác, trình biên dịch sẽ ngăn bạn sử dụng nó trước khi nó được khởi tạo:
+Nếu bạn khai báo một tên biến và khởi tạo nó sau đó trong một dòng lệnh khác, trình biên dịch sẽ ngăn bạn sử dụng nó trước khi nó được khởi tạo:
 ```
 let x;
 foobar(x); // error: borrow of possibly-uninitialized variable: `x`
@@ -38,4 +38,61 @@ x = 42;
 let x;
 x = 42;
 foobar(x); // the type of `x` will be inferred from here
+```
+Dấu gạch dưới  **_**  là một tên biến đặc biệt - hay đúng hơn là "thiếu tên". Về cơ bản, nó được sử dụng để  loại bỏ (throw away) một cái gì đó:
+```
+// this does *nothing* because 42 is a constant
+let _ = 42;
+
+// this calls `get_thing` but throws away its result
+let _ = get_thing();
+```
+Những tên biến bắt đầu bằng dấu gạch dưới cũng giống như những tên biến thông thường, khác ở chỗ trình biên dịch sẽ không cảnh báo khi chúng không được sử dụng:
+```
+// we may use `_x` eventually, but our code is a work-in-progress
+// and we just wanted to get rid of a compiler warning for now.
+let _x = 42;
+```
+Có thể khai báo lại một biến, cái này gọi là _Shadowing_ - nói cách khác, bạn có thể _shadow_ một ràng buộc biến:
+```
+let x = 13;
+let x = x + 3;
+// using `x` after that line only refers to the second `x`,
+// the first `x` no longer exists.
+```
+Giống như một vài ngôn ngữ khác, trong Rust cũng có tuple - một dạng dữ liệu lưu trữ các đối tượng có thứ tự và bất biến:
+```
+let pair = ('a', 17);
+pair.0; // this is 'a'
+pair.1; // this is 17
+```
+Nếu bạn muốn chú thích kiểu cho **pair**, viết như sau:
+```
+let pair: (char, i32) = ('a', 17);
+```
+Các tuple có thể được destructured, có nghĩa là chúng được chia thành các trường riêng lẻ:
+```
+let (some_char, some_int) = ('a', 17);
+// now, `some_char` is 'a', and `some_int` is 17
+```
+Điều này đặc biệt hữu ích khi một hàm trả về một tuple:
+```
+let (left, right) = slice.split_at(middle); // middle is a tuple 
+```
+Tất nhiên, khi hủy cấu trúc một tuple, **_** có thể được sử dụng để loại bỏ một phần không dùng đến của nó:
+```
+let (_, right) = slice.split_at(middle);
+```
+Dấu chấm phẩy đánh dấu kết thúc một câu lệnh:
+```
+let x = 3;
+let y = 5;
+let z = y + x;
+```
+Điều này có nghĩa là một câu lệnh có thể nằm ở trên nhiều dòng:
+```
+let x = vec![1, 2, 3, 4, 5, 6, 7, 8]
+    .iter()
+    .map(|x| x + 3)
+    .fold(0, |x, y| x + y);
 ```
